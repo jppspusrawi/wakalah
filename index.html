@@ -349,7 +349,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
   <section id="page-funds" class="page"><div class="page-title"><div><h1>Dana Wakalah</h1><p>Allocation polisi dan penggunaan dana mengikut kategori.</p></div></div><div class="card"><div class="card-body" id="fundCards"></div></div></section>
   <section id="page-asnaf" class="page"><div class="page-title"><div><h1>Asnaf</h1><p>Analitik penerima berdasarkan lima kategori asnaf yang dibenarkan.</p></div></div><div class="stats-grid" id="asnafCards"></div></section>
   <section id="page-analytics" class="page"><div class="page-title"><div><h1>Analitik</h1><p>Ringkasan prestasi Wakalah bagi tahun dipilih.</p></div><button class="btn" id="meetingBtn">Mode Pembentangan</button></div><div class="card"><div class="card-head"><h2>Penggunaan Dana</h2></div><div class="card-body" id="analyticsFunds"></div></div><div class="card section"><div class="card-head"><h2>Trend Bulanan</h2></div><div class="card-body"><div class="chart-box"><div class="bar-chart" id="analyticsMonthly"></div></div></div></div></section>
-  <section id="page-reports" class="page"><div class="page-title"><div><h1>Laporan</h1><p>Jana laporan pengurusan berdasarkan data semasa.</p></div></div><div class="stats-grid"><div class="stat-box"><small>Setengah Tahun</small><strong>Laporan H1</strong><button class="btn primary" style="margin-top:12px" data-report="H1">Jana</button></div><div class="stat-box"><small>Tahunan</small><strong>Laporan Tahunan</strong><button class="btn primary" style="margin-top:12px" data-report="annual">Jana</button></div><div class="stat-box"><small>Data</small><strong>CSV / Excel</strong><button class="btn primary" style="margin-top:12px" id="exportBtn">Eksport CSV</button></div></div><div class="card section"><div class="card-body" id="reportPreview"></div></div></section>
+  <section id="page-reports" class="page"><div class="page-title"><div><h1>Laporan</h1><p>Jana laporan pengurusan berdasarkan data semasa.</p></div></div><div class="stats-grid"><div class="stat-box"><small>Setengah Tahun</small><strong>Laporan H1</strong><button class="btn primary" style="margin-top:12px" data-report="H1">Jana</button></div><div class="stat-box"><small>Tahunan</small><strong>Laporan Tahunan</strong><button class="btn primary" style="margin-top:12px" data-report="annual">Jana</button></div><div class="stat-box"><small>Data</small><strong>CSV / Excel</strong><button class="btn primary" style="margin-top:12px" id="exportBtn">Eksport CSV</button></div><div class="stat-box"><small>Sandaran (semua tahun)</small><strong>Sandaran Penuh</strong><button class="btn primary" style="margin-top:12px" id="backupBtn">Muat Turun 3 Fail CSV</button></div></div><div class="card section"><div class="card-body" id="reportPreview"></div></div></section>
   <section id="page-documents" class="page"><div class="page-title"><div><h1>Dokumen</h1><p>Dokumen sokongan permohonan.</p></div></div><div class="card"><div class="card-body"><div class="empty">Modul muat naik dokumen belum tersedia.<br><button class="btn primary" data-page="applications" style="margin-top:12px">Lihat Permohonan</button></div></div></div></section>
   <section id="page-audit" class="page"><div class="page-title"><div><h1>Audit Log</h1><p>Rekod perubahan penting dan pengesahan kewangan.</p></div></div><div class="card"><div class="card-body table-wrap"><table class="data-table"><thead><tr><th>Masa</th><th>Pengguna</th><th>Tindakan</th><th>Rekod</th><th>Butiran</th></tr></thead><tbody id="auditTable"></tbody></table></div></div></section>
   <section id="page-settings" class="page"><div class="page-title"><div><h1>Tetapan</h1><p>Konfigurasi sistem dan polisi.</p></div></div><div class="card"><div class="card-head"><h2>Polisi Pecahan Dana</h2><span class="pill blue">Dilindungi</span></div><div class="card-body"><div id="policySettings"></div><div class="login-note" style="margin-top:18px">Pengguna biasa tidak boleh mengubah 40 / 25 / 13 / 15 / 7. Perubahan polisi memerlukan kuasa pentadbir dan audit.</div></div></div></section>
@@ -617,6 +617,39 @@ async function verifyIncoming(id){
 document.getElementById("exportBtn").onclick=exportCSV;document.getElementById("meetingBtn").onclick=meetingMode;document.getElementById("notifyBtn").onclick=()=>navigate("verification");
 document.querySelectorAll("[data-report]").forEach(b=>b.addEventListener("click",()=>{renderReportPreview();showToast("Laporan "+b.dataset.report+" telah dijana dalam pratonton.")}));
 document.getElementById("globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){navigate("applications");document.getElementById("appSearch").value=e.target.value;renderApplications()}});
+const BACKUP_COLS={
+ applications:["id","year","date","applicant","type","program","fund","asnaf","recipient","requested","proposed","approved","actual","status","variance_reason","notes","verified_at","created_at"],
+ incoming:["id","year","date","source","ref","amount","verified","note","created_at"],
+ audit:["id","time","user_name","action","record","detail"]
+};
+async function fetchAll(table){
+ let all=[],from=0;
+ for(;;){
+  const {data,error}=await sb.from(table).select("*").order("id",{ascending:true}).range(from,from+999);
+  if(error)throw error;all=all.concat(data);
+  if(data.length<1000)break;from+=1000;
+ }
+ return all;
+}
+function downloadCSV(name,cols,rows){
+ const csv=[cols,...rows.map(r=>cols.map(c=>r[c]))].map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+}
+async function backupAll(){
+ if(busy)return;busy=true;showToast("Menyediakan sandaran...");
+ try{
+  const day=dateNow();
+  for(const t of Object.keys(BACKUP_COLS)){
+   const rows=await fetchAll(t);
+   downloadCSV(`wakalah-sandaran-${day}-${t}.csv`,BACKUP_COLS[t],rows);
+   await new Promise(r=>setTimeout(r,500));
+  }
+  showToast("Sandaran siap. Jika diminta, benarkan muat turun berbilang fail.");
+ }catch(e){showToast("Gagal sandaran: "+(e.message||e))}
+ busy=false;
+}
+document.getElementById("backupBtn").addEventListener("click",backupAll);
+
 (async()=>{
  const {data}=await sb.auth.getSession();
  if(data.session&&await loadProfile(data.session.user))await boot();else boot();
