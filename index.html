@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#06284f">
+<title>Wakalah Pusrawi — Pengurusan Wakalah Zakat</title>
+<style>
+:root{
+  --navy:#06284f;--navy2:#0b3768;--navy3:#123f72;--green:#159a79;--green2:#0d8068;
+  --gold:#e9b84c;--blue:#2f74d0;--teal:#27a88a;--purple:#7b4bc3;--orange:#e5a927;
+  --red:#e3485b;--bg:#f4f7fb;--card:#fff;--text:#112b50;--muted:#70819a;--line:#dce5ef;
+  --shadow:0 8px 24px rgba(18,54,92,.08);--radius:14px;
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}.sidebar{position:fixed;z-index:20;inset:0 auto 0 0;width:254px;background:linear-gradient(180deg,#06284f,#031d3a);color:#fff;padding:22px 14px;overflow:auto}
+.brand{display:flex;gap:12px;align-items:center;padding:2px 10px 25px}.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(145deg,#35bb7e,#0b765e);display:grid;place-items:center;font-size:21px;font-weight:900}.brand strong{font-size:15px;display:block}.brand span{font-size:10px;color:#a9bdd4}
+.nav-title{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#718ba8;padding:8px 12px}.nav-item{display:flex;align-items:center;gap:12px;color:#dce9f7;text-decoration:none;border-radius:10px;padding:11px 12px;margin:3px 0;font-size:13px;transition:.2s}.nav-item:hover,.nav-item.active{background:linear-gradient(90deg,#0b7569,#116b73);color:#fff}.nav-item .ico{width:20px;text-align:center;font-size:16px}.nav-sub{padding-left:40px;font-size:12px;display:none}.nav-group.open .nav-sub{display:block}.nav-arrow{margin-left:auto}.sidebar-foot{position:absolute;bottom:18px;left:24px;right:20px;color:#7f99b4;font-size:10px}.main{margin-left:254px;width:calc(100% - 254px)}.topbar{height:78px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:10}.top-left h1{margin:0;font-size:24px;letter-spacing:-.5px}.top-left small{color:var(--muted)}.top-actions{display:flex;align-items:center;gap:14px}.search{width:320px;position:relative}.search input{width:100%;border:1px solid var(--line);border-radius:24px;padding:10px 38px 10px 15px;outline:none;background:#fbfdff}.search span{position:absolute;right:13px;top:9px;color:#55708e}.select{border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 11px;color:var(--text)}.icon-btn{width:38px;height:38px;border:1px solid var(--line);background:#fff;border-radius:50%;position:relative}.badge{position:absolute;right:-2px;top:-3px;background:var(--red);color:#fff;font-size:9px;min-width:17px;height:17px;border-radius:10px;display:grid;place-items:center}.user{display:flex;gap:9px;align-items:center}.avatar{width:36px;height:36px;border-radius:50%;background:#102f54;color:#fff;display:grid;place-items:center;font-size:14px}.user b{font-size:12px}.user small{display:block;color:var(--muted)}
+.content{padding:25px 22px 40px;max-width:1600px;margin:auto}.demo{display:inline-flex;align-items:center;gap:7px;background:#fff5d8;border:1px solid #f1d78a;color:#8c6914;border-radius:20px;padding:6px 11px;font-size:11px;font-weight:700;margin-bottom:14px}.dot{width:7px;height:7px;background:var(--gold);border-radius:50%}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:18px}.kpi{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);padding:17px;min-height:130px}.kpi-top{display:flex;justify-content:space-between;align-items:center}.kpi-icon{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:18px}.kpi:nth-child(1) .kpi-icon{background:#d9f2e9;color:#128b6c}.kpi:nth-child(2) .kpi-icon{background:#dbeafe;color:#2369c0}.kpi:nth-child(3) .kpi-icon{background:#fff0c9;color:#b27c0e}.kpi:nth-child(4) .kpi-icon{background:#eee3fb;color:#7040a8}.kpi:nth-child(5) .kpi-icon{background:#e6f0ff;color:#2f74d0}.kpi:nth-child(6) .kpi-icon{background:#ffe6e9;color:#d13d52}.kpi label{display:block;font-size:11px;color:var(--muted);margin-top:10px}.kpi strong{display:block;font-size:21px;margin-top:3px;letter-spacing:-.5px}.kpi small{color:var(--muted);font-size:10px}
+.grid-main{display:grid;grid-template-columns:1.5fr 1.15fr .82fr .78fr;gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.card-head{padding:15px 16px;border-bottom:1px solid #edf1f6;display:flex;align-items:center;justify-content:space-between}.card-head h2{font-size:14px;margin:0}.card-head small{color:var(--muted);font-size:10px}.card-body{padding:15px}.wide{grid-column:span 2}.donut-wrap{display:flex;gap:18px;align-items:center}.donut{width:185px;height:185px;border-radius:50%;background:conic-gradient(#0e4d88 0 40%,#159a79 40% 65%,#e5aa25 65% 78%,#7b4bc3 78% 93%,#2da4c4 93% 100%);position:relative;flex:none}.donut:after{content:"";position:absolute;inset:43px;background:#fff;border-radius:50%;box-shadow:inset 0 0 0 1px #eef2f7}.donut-center{position:absolute;z-index:1;inset:0;display:grid;place-content:center;text-align:center}.donut-center b{font-size:17px}.donut-center span{font-size:9px;color:var(--muted)}.legend{flex:1}.legend-row{display:grid;grid-template-columns:9px 1fr auto;gap:7px;align-items:center;padding:8px 0;border-bottom:1px solid #eef2f6;font-size:10px}.legend-row:last-child{border:0}.legend-dot{width:9px;height:9px;border-radius:50%}.legend-row b{font-size:10px}.legend-row small{display:block;color:var(--muted);font-size:9px}.chart-box{height:235px}.bar-chart{height:100%;display:flex;align-items:flex-end;justify-content:space-around;gap:16px;padding:18px 10px 5px;border-bottom:1px solid #dfe6ee;background:repeating-linear-gradient(to top,#fff 0,#fff 47px,#edf2f7 48px)}.bar-group{height:100%;flex:1;display:flex;align-items:flex-end;justify-content:center;gap:6px;position:relative}.bar{width:25px;border-radius:5px 5px 0 0;position:relative;min-height:5px}.bar.blue{background:#2f74d0}.bar.green{background:#159a79}.bar span{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;white-space:nowrap}.bar-label{position:absolute;bottom:-23px;font-size:9px;color:var(--muted);white-space:nowrap}.variance{margin-top:20px;background:#f7faff;border-radius:10px;padding:11px;display:flex;justify-content:space-between}.variance b{color:#e3485b;font-size:16px}.mini-table{width:100%;border-collapse:collapse;font-size:10px}.mini-table td{padding:8px 3px;border-bottom:1px solid #edf1f5}.mini-table td:last-child{text-align:right}.pill{padding:4px 8px;border-radius:20px;font-size:9px;font-weight:700;display:inline-block}.pill.green{background:#dcf5ed;color:#0c795f}.pill.blue{background:#e3efff;color:#2266bd}.pill.yellow{background:#fff0ca;color:#9a6b09}.pill.red{background:#ffe5e8;color:#bd3043}.pill.orange{background:#fff0dd;color:#b8650c}.action-list{display:grid;gap:10px}.action{padding:13px;border-radius:10px;border:1px solid #edf1f5;display:flex;gap:10px;align-items:center}.action .aico{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;background:#edf5ff}.action b{font-size:10px}.action small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.section{margin-top:12px}.table-wrap{overflow:auto}.data-table{width:100%;border-collapse:collapse;font-size:10px;min-width:850px}.data-table th{background:#f7f9fc;text-align:left;color:#61738b;font-size:9px;padding:11px}.data-table td{padding:11px;border-top:1px solid #edf1f5}.data-table tr:hover td{background:#fbfdff}.id{font-weight:700;color:#15518e}.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;color:var(--text);padding:9px 12px;border-radius:8px;font-size:11px}.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.green{background:var(--green);color:#fff;border-color:var(--green)}.btn.danger{background:#fff0f2;color:#b92f42;border-color:#ffd3d9}.btn:hover{filter:brightness(.97)}.page{display:none}.page.active{display:block}.page-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.page-title h1{margin:0;font-size:22px}.page-title p{margin:4px 0 0;color:var(--muted);font-size:12px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:700}.field input,.field select,.field textarea{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff;outline:none}.field textarea{min-height:90px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#6f9dcc;box-shadow:0 0 0 3px #eaf2fb}.modal{position:fixed;inset:0;background:rgba(3,24,47,.52);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}.modal.open{display:flex}.modal-box{background:#fff;border-radius:16px;width:min(760px,100%);max-height:90vh;overflow:auto;box-shadow:0 25px 70px rgba(0,0,0,.25)}.modal-head{padding:17px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modal-head h3{margin:0;font-size:15px}.modal-body{padding:20px}.modal-foot{padding:14px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}.close{border:0;background:#f2f5f8;width:30px;height:30px;border-radius:50%}.toast{position:fixed;right:22px;bottom:22px;background:#092e56;color:#fff;padding:12px 15px;border-radius:10px;box-shadow:var(--shadow);display:none;z-index:200;font-size:11px}.toast.show{display:block;animation:fade 3s forwards}@keyframes fade{0%,70%{opacity:1}100%{opacity:0}}.progress{height:7px;background:#edf2f6;border-radius:8px;overflow:hidden}.progress span{display:block;height:100%;background:var(--green);border-radius:8px}.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat-box{border:1px solid var(--line);padding:14px;border-radius:10px}.stat-box small{color:var(--muted)}.stat-box strong{font-size:20px;display:block;margin-top:4px}.empty{text-align:center;padding:50px 20px;color:var(--muted)}.login{min-height:100vh;display:none;place-items:center;background:radial-gradient(circle at 20% 20%,#124d7c,#06284f 55%,#031c36)}.login.show{display:grid}.login-card{width:min(410px,92vw);background:#fff;border-radius:18px;padding:32px;box-shadow:0 25px 80px rgba(0,0,0,.25)}.login-logo{text-align:center;margin-bottom:24px}.login-logo .brand-mark{margin:auto;width:50px;height:50px}.login-logo h1{font-size:22px;margin:10px 0 3px}.login-logo p{font-size:11px;color:var(--muted);margin:0}.login-note{background:#fff8e4;border:1px solid #f2dda1;border-radius:9px;padding:9px;font-size:10px;color:#80600e;margin-top:12px}.meeting{position:fixed;inset:0;background:#061e3b;color:#fff;z-index:300;display:none;padding:40px}.meeting.open{display:block}.meeting .close-meeting{position:absolute;right:25px;top:20px}.meeting h1{font-size:34px;margin:0}.meeting .meeting-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:35px 0}.meeting .mk{background:#0d3158;border:1px solid #214b74;border-radius:18px;padding:25px}.meeting .mk small{color:#9db5cd}.meeting .mk strong{font-size:32px;display:block;margin-top:8px}.meeting .meeting-chart{height:300px;background:#0b2a4c;border:1px solid #214b74;border-radius:18px;padding:20px;display:flex;align-items:flex-end;gap:16px}.meeting-bar{flex:1;background:#159a79;border-radius:7px 7px 0 0;min-height:10px;position:relative}.meeting-bar span{position:absolute;top:-25px;font-size:11px}
+@media(max-width:1250px){.kpis{grid-template-columns:repeat(3,1fr)}.grid-main{grid-template-columns:1fr 1fr}.wide{grid-column:span 2}}
+@media(max-width:900px){.sidebar{width:72px;padding:16px 8px}.brand{justify-content:center;padding:0 0 20px}.brand div:not(.brand-mark),.nav-title,.nav-item span:not(.ico),.sidebar-foot{display:none}.nav-item{justify-content:center}.main{margin-left:72px;width:calc(100% - 72px)}.topbar{padding:0 15px}.search{width:200px}.user div:not(.avatar){display:none}.content{padding:16px}.kpis{grid-template-columns:repeat(2,1fr)}.grid-main{grid-template-columns:1fr}.wide{grid-column:auto}.donut-wrap{flex-direction:column}.stats-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.topbar{height:auto;min-height:70px;gap:8px;flex-wrap:wrap;padding:12px}.top-left{order:1}.top-actions{order:2;width:100%;justify-content:flex-end}.search{flex:1;width:auto}.kpis{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.page-title{align-items:flex-start;gap:10px;flex-direction:column}.meeting{padding:25px 18px}.meeting .meeting-kpis{grid-template-columns:1fr 1fr}.meeting .mk strong{font-size:22px}}
+
+/* ===== Dashboard readability & spacing refinement ===== */
+.content{
+  padding:28px 26px 48px;
+}
+.grid-main{
+  grid-template-columns:minmax(0,2.25fr) minmax(310px,.95fr) minmax(270px,.78fr);
+  gap:16px;
+  align-items:stretch;
+}
+.grid-main > .card{
+  min-width:0;
+}
+.grid-main .wide{
+  grid-column:auto;
+}
+.grid-main .action-card{
+  grid-column:2 / 4;
+}
+.card{
+  border-radius:16px;
+}
+.card-head{
+  padding:17px 18px;
+  min-height:58px;
+}
+.card-head h2{
+  font-size:15px;
+  line-height:1.25;
+  letter-spacing:-.1px;
+}
+.card-head small{
+  font-size:11px;
+  line-height:1.3;
+}
+.card-body{
+  padding:18px;
+}
+.select{
+  min-width:102px;
+  padding:8px 10px !important;
+  font-size:11px !important;
+}
+.donut-wrap{
+  gap:28px;
+  min-height:255px;
+}
+.donut{
+  width:205px;
+  height:205px;
+}
+.donut:after{
+  inset:48px;
+}
+.donut-center b{
+  font-size:19px;
+}
+.donut-center span{
+  font-size:10px;
+}
+.legend-row{
+  grid-template-columns:10px minmax(0,1fr) auto;
+  gap:10px;
+  padding:10px 0;
+  font-size:11px;
+}
+.legend-row b{
+  font-size:11.5px;
+  line-height:1.35;
+}
+.legend-row small{
+  font-size:10px;
+  line-height:1.45;
+  margin-top:2px;
+}
+.legend-row strong{
+  font-size:11.5px;
+}
+.legend-dot{
+  width:10px;
+  height:10px;
+}
+.chart-box{
+  height:270px;
+}
+#compareChart{
+  gap:8px;
+  padding:22px 8px 40px;
+  overflow:hidden;
+}
+#compareChart .bar-group{
+  min-width:58px;
+  gap:7px;
+}
+#compareChart .bar{
+  width:29px;
+  max-width:29px;
+  border-radius:6px 6px 0 0;
+}
+#compareChart .bar span{
+  font-size:9.5px;
+  top:-20px;
+}
+#compareChart .bar-label{
+  bottom:-29px;
+  max-width:78px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  text-align:center;
+  font-size:9.5px;
+  line-height:1.2;
+}
+.variance{
+  margin-top:14px;
+  padding:13px 14px;
+  gap:14px;
+  align-items:center;
+}
+.variance small{
+  font-size:10px;
+}
+.variance b{
+  font-size:17px;
+}
+.variance span:last-child{
+  font-size:10px !important;
+  max-width:150px !important;
+  line-height:1.4;
+}
+#asnafMini{
+  padding-top:16px;
+}
+#asnafMini > div{
+  margin-bottom:15px !important;
+}
+#asnafMini > div:last-child{
+  margin-bottom:0 !important;
+}
+#asnafMini > div > div:first-child{
+  font-size:11px !important;
+  line-height:1.35;
+  gap:8px;
+}
+#asnafMini > div > small{
+  font-size:10px !important;
+  line-height:1.35;
+}
+.progress{
+  height:8px;
+  margin-top:6px;
+}
+.action-list{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.action{
+  min-width:0;
+  padding:14px;
+}
+.action b{
+  font-size:11px;
+  line-height:1.4;
+}
+.action small{
+  font-size:10px;
+  line-height:1.35;
+}
+.data-table{
+  font-size:11px;
+}
+.data-table th{
+  font-size:10px;
+}
+.kpi label{
+  font-size:12px;
+}
+.kpi strong{
+  font-size:22px;
+}
+.kpi small{
+  font-size:11px;
+}
+@media(max-width:1250px){
+  .grid-main{
+    grid-template-columns:minmax(0,1.7fr) minmax(300px,1fr);
+  }
+  .grid-main .action-card{
+    grid-column:1 / -1;
+  }
+  .action-list{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+@media(max-width:900px){
+  .grid-main{
+    grid-template-columns:1fr;
+  }
+  .grid-main .action-card{
+    grid-column:auto;
+  }
+  .action-list{
+    grid-template-columns:1fr;
+  }
+  .donut-wrap{
+    min-height:0;
+  }
+}
+@media(max-width:600px){
+  .content{
+    padding:16px 12px 32px;
+  }
+  .card-head{
+    padding:15px;
+  }
+  .card-body{
+    padding:15px;
+  }
+  .donut{
+    width:185px;
+    height:185px;
+  }
+  .donut:after{
+    inset:43px;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="login">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="brand-mark">✦</div>
+      <h1>WAKALAH PUSRAWI</h1>
+      <p>Pengurusan Wakalah Zakat<br>Hospital Pakar PUSRAWI Sdn Bhd</p>
+    </div>
+    <form id="loginForm">
+      <div class="field"><label>E-mel</label><input id="loginEmail" type="email" autocomplete="username" required></div>
+      <div class="field" style="margin-top:12px"><label>Kata Laluan</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+      <button class="btn primary" style="width:100%;margin-top:17px">Log Masuk</button>
+      <div class="login-note">Untuk pengguna berdaftar sahaja.</div>
+    </form>
+  </div>
+</div>
+
+<div id="app" class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">✦</div><div><strong>WAKALAH PUSRAWI</strong><span>Hospital Pakar PUSRAWI Sdn Bhd</span></div></div>
+  <div class="nav-title">Utama</div>
+  <a class="nav-item active" href="#" data-page="dashboard"><span class="ico">⌂</span><span>Dashboard</span></a>
+  <div class="nav-group" id="financeGroup">
+    <a class="nav-item" href="#" data-toggle="finance"><span class="ico">▣</span><span>Kewangan</span><span class="nav-arrow">⌄</span></a>
+    <div class="nav-sub">
+      <a class="nav-item" href="#" data-page="incoming"><span>Dana Masuk</span></a>
+      <a class="nav-item" href="#" data-page="outgoing"><span>Dana Keluar</span></a>
+      <a class="nav-item" href="#" data-page="verification"><span>Pengesahan Finance</span></a>
+    </div>
+  </div>
+  <div class="nav-group" id="appGroup">
+    <a class="nav-item" href="#" data-toggle="applications"><span class="ico">▤</span><span>Permohonan & Agihan</span><span class="nav-arrow">⌄</span></a>
+    <div class="nav-sub">
+      <a class="nav-item" href="#" data-page="applications"><span>Semua Permohonan</span></a>
+      <a class="nav-item" href="#" data-page="newApplication"><span>Permohonan Baharu</span></a>
+    </div>
+  </div>
+  <a class="nav-item" href="#" data-page="funds"><span class="ico">◎</span><span>Dana Wakalah</span></a>
+  <a class="nav-item" href="#" data-page="asnaf"><span class="ico">♧</span><span>Asnaf</span></a>
+  <a class="nav-item" href="#" data-page="analytics"><span class="ico">▥</span><span>Analitik</span></a>
+  <a class="nav-item" href="#" data-page="reports"><span class="ico">▤</span><span>Laporan</span></a>
+  <a class="nav-item" href="#" data-page="documents"><span class="ico">□</span><span>Dokumen</span></a>
+  <a class="nav-item" href="#" data-page="audit"><span class="ico">◌</span><span>Audit Log</span></a>
+  <a class="nav-item" href="#" data-page="settings"><span class="ico">⚙</span><span>Tetapan</span></a>
+  <div class="sidebar-foot">WAKALAH PUSRAWI<br>v2.0</div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="top-left"><h1>Wakalah <span id="yearTitle">2026</span></h1><small>Pengurusan Wakalah Zakat</small></div>
+  <div class="top-actions">
+    <div class="search"><input id="globalSearch" placeholder="Cari ID, program, penerima, atau rujukan..."><span>⌕</span></div>
+    <select class="select" id="yearSelect"><option>2024</option><option>2025</option><option selected>2026</option><option>2027</option></select>
+    <button class="icon-btn" id="notifyBtn">♧<span class="badge" id="notifyBadge">0</span></button>
+    <div class="user"><div class="avatar" id="avatar">PP</div><div><b id="userName">PIC Pegawai Agama</b><small id="userRole">PIC</small></div></div>
+    <button class="btn" id="logoutBtn">Keluar</button>
+  </div>
+</header>
+
+<div class="content">
+
+  <section id="page-dashboard" class="page active">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid-main">
+      <div class="card wide"><div class="card-head"><h2>Pecahan Dana Wakalah</h2><small>Polisi 40 / 25 / 13 / 15 / 7</small></div><div class="card-body"><div class="donut-wrap"><div class="donut"><div class="donut-center"><b id="donutTotal">RM0</b><span>Jumlah Dana</span></div></div><div class="legend" id="fundLegend"></div></div></div></div>
+      <div class="card"><div class="card-head"><h2>Pegawai Agama vs Finance</h2><select id="comparisonFilter" class="select" style="padding:6px;font-size:9px"><option value="Semua">Semua</option><option value="Pendidikan">Pendidikan</option><option value="Perubatan">Perubatan</option><option value="Permohonan Luar">Permohonan Luar</option><option value="Fakir Miskin">Fakir Miskin</option><option value="Bencana">Bencana</option></select></div><div class="card-body"><div class="chart-box"><div class="bar-chart" id="compareChart"></div></div><div class="variance"><span><small>Perbezaan (Variance)</small><br><b id="varianceKpi">RM0</b></span><span style="font-size:9px;color:var(--muted);max-width:130px">Approved - Actual Finance</span></div></div></div>
+      <div class="card"><div class="card-head"><h2>Agihan Mengikut Asnaf</h2><small>5 kategori</small></div><div class="card-body" id="asnafMini"></div></div>
+      <div class="card action-card"><div class="card-head"><h2>Perlu Tindakan <span class="pill red" id="actionCount">0</span></h2></div><div class="card-body"><div class="action-list" id="actionList"></div></div></div>
+    </div>
+    <div class="card section"><div class="card-head"><h2>Permohonan & Transaksi Terkini</h2><div class="toolbar"><button class="btn" data-page="applications">Lihat Semua</button><button class="btn primary" id="quickNew">+ Permohonan</button></div></div><div class="card-body table-wrap"><table class="data-table"><thead><tr><th>Bil</th><th>ID</th><th>Program</th><th>Kategori Dana</th><th>Asnaf</th><th>Dicadang</th><th>Diluluskan</th><th>Actual Finance</th><th>Variance</th><th>Status</th><th>Tarikh</th></tr></thead><tbody id="recentTable"></tbody></table></div></div>
+    <div class="card section"><div class="card-head"><h2>Trend Agihan Bulanan</h2><small>Cadangan vs Actual Finance</small></div><div class="card-body"><div class="chart-box"><div class="bar-chart" id="monthlyChart"></div></div></div></div>
+  </section>
+
+  <section id="page-applications" class="page">
+    <div class="page-title"><div><h1>Semua Permohonan</h1><p>Urus permohonan, kelulusan dan agihan.</p></div><button class="btn primary" id="newAppBtn">+ Permohonan Baharu</button></div>
+    <div class="card"><div class="card-body"><div class="toolbar" style="margin-bottom:12px"><input class="select" id="appSearch" placeholder="Cari ID / program..." style="min-width:220px"><select class="select" id="statusFilter"><option value="">Semua Status</option><option>Draf</option><option>Dalam Semakan</option><option>Diluluskan</option><option>Menunggu Finance</option><option>Disahkan Finance</option><option>Selesai</option><option>Ditolak</option></select><select class="select" id="fundFilter"><option value="">Semua Kategori Dana</option></select><select class="select" id="asnafFilter"><option value="">Semua Asnaf</option></select></div><div class="table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>Program</th><th>Kategori Dana</th><th>Asnaf</th><th>Dipohon</th><th>Dicadang</th><th>Diluluskan</th><th>Actual</th><th>Variance</th><th>Status</th><th></th></tr></thead><tbody id="applicationsTable"></tbody></table></div></div></div>
+  </section>
+
+  <section id="page-newApplication" class="page">
+    <div class="page-title"><div><h1>Permohonan Baharu</h1><p>Lengkapkan maklumat permohonan dan penerima.</p></div><button class="btn" data-page="applications">Kembali</button></div>
+    <div class="card"><div class="card-body"><form id="applicationForm"><div class="form-grid">
+      <div class="field"><label>Nama Pemohon *</label><input id="fApplicant" required></div><div class="field"><label>Tarikh *</label><input id="fDate" type="date" required></div>
+      <div class="field"><label>Program *</label><input id="fProgram" placeholder="Contoh: Bantuan Keperluan Asas" required></div><div class="field"><label>Jenis Pemohon</label><select id="fType"><option>Wargakerja</option><option>Ahli Keluarga Wargakerja</option><option>Luar</option></select></div>
+      <div class="field"><label>Kategori Dana *</label><select id="fFund" required></select></div><div class="field"><label>Asnaf *</label><select id="fAsnaf" required></select></div>
+      <div class="field"><label>Jumlah Dipohon (RM) *</label><input id="fRequested" type="number" min="0" step=".01" required></div><div class="field"><label>Jumlah Dicadangkan (RM) *</label><input id="fProposed" type="number" min="0" step=".01" required></div>
+      <div class="field"><label>Jumlah Diluluskan (RM)</label><input id="fApproved" type="number" min="0" step=".01" value="0"></div><div class="field"><label>Nama Penerima *</label><input id="fRecipient" required></div>
+      <div class="field full"><label>Catatan</label><textarea id="fNotes"></textarea></div>
+    </div><div style="margin-top:17px;display:flex;justify-content:flex-end;gap:8px"><button type="reset" class="btn">Kosongkan</button><button class="btn primary">Simpan Permohonan</button></div></form></div></div>
+  </section>
+
+  <section id="page-incoming" class="page"><div class="page-title"><div><h1>Dana Masuk</h1><p>Rekod penerimaan Wakalah daripada PPZ.</p></div><button class="btn primary" id="incomingBtn">+ Dana Masuk</button></div><div class="card"><div class="card-body table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>Tarikh</th><th>Sumber</th><th>Rujukan PPZ</th><th>Jumlah</th><th>Status Finance</th><th>Catatan</th></tr></thead><tbody id="incomingTable"></tbody></table></div></div></section>
+  <section id="page-outgoing" class="page"><div class="page-title"><div><h1>Dana Keluar</h1><p>Rekod transaksi agihan dan pembayaran.</p></div></div><div class="card"><div class="card-body table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>Permohonan</th><th>Kategori Dana</th><th>Asnaf</th><th>Dicadang</th><th>Diluluskan</th><th>Actual</th><th>Variance</th><th>Status</th></tr></thead><tbody id="outgoingTable"></tbody></table></div></div></section>
+  <section id="page-verification" class="page"><div class="page-title"><div><h1>Pengesahan Finance</h1><p>Semak dan sahkan amaun sebenar transaksi.</p></div></div><div class="card"><div class="card-body table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>Program</th><th>Diluluskan</th><th>Actual Finance</th><th>Variance</th><th>Status</th><th>Tindakan</th></tr></thead><tbody id="verificationTable"></tbody></table></div></div></section>
+  <section id="page-funds" class="page"><div class="page-title"><div><h1>Dana Wakalah</h1><p>Allocation polisi dan penggunaan dana mengikut kategori.</p></div></div><div class="card"><div class="card-body" id="fundCards"></div></div></section>
+  <section id="page-asnaf" class="page"><div class="page-title"><div><h1>Asnaf</h1><p>Analitik penerima berdasarkan lima kategori asnaf yang dibenarkan.</p></div></div><div class="stats-grid" id="asnafCards"></div></section>
+  <section id="page-analytics" class="page"><div class="page-title"><div><h1>Analitik</h1><p>Ringkasan prestasi Wakalah bagi tahun dipilih.</p></div><button class="btn" id="meetingBtn">Mode Pembentangan</button></div><div class="card"><div class="card-head"><h2>Penggunaan Dana</h2></div><div class="card-body" id="analyticsFunds"></div></div><div class="card section"><div class="card-head"><h2>Trend Bulanan</h2></div><div class="card-body"><div class="chart-box"><div class="bar-chart" id="analyticsMonthly"></div></div></div></div></section>
+  <section id="page-reports" class="page"><div class="page-title"><div><h1>Laporan</h1><p>Jana laporan pengurusan berdasarkan data semasa.</p></div></div><div class="stats-grid"><div class="stat-box"><small>Setengah Tahun</small><strong>Laporan H1</strong><button class="btn primary" style="margin-top:12px" data-report="H1">Jana</button></div><div class="stat-box"><small>Tahunan</small><strong>Laporan Tahunan</strong><button class="btn primary" style="margin-top:12px" data-report="annual">Jana</button></div><div class="stat-box"><small>Data</small><strong>CSV / Excel</strong><button class="btn primary" style="margin-top:12px" id="exportBtn">Eksport CSV</button></div></div><div class="card section"><div class="card-body" id="reportPreview"></div></div></section>
+  <section id="page-documents" class="page"><div class="page-title"><div><h1>Dokumen</h1><p>Dokumen sokongan permohonan.</p></div></div><div class="card"><div class="card-body"><div class="empty">Modul muat naik dokumen belum tersedia.<br><button class="btn primary" data-page="applications" style="margin-top:12px">Lihat Permohonan</button></div></div></div></section>
+  <section id="page-audit" class="page"><div class="page-title"><div><h1>Audit Log</h1><p>Rekod perubahan penting dan pengesahan kewangan.</p></div></div><div class="card"><div class="card-body table-wrap"><table class="data-table"><thead><tr><th>Masa</th><th>Pengguna</th><th>Tindakan</th><th>Rekod</th><th>Butiran</th></tr></thead><tbody id="auditTable"></tbody></table></div></div></section>
+  <section id="page-settings" class="page"><div class="page-title"><div><h1>Tetapan</h1><p>Konfigurasi sistem dan polisi.</p></div></div><div class="card"><div class="card-head"><h2>Polisi Pecahan Dana</h2><span class="pill blue">Dilindungi</span></div><div class="card-body"><div id="policySettings"></div><div class="login-note" style="margin-top:18px">Pengguna biasa tidak boleh mengubah 40 / 25 / 13 / 15 / 7. Perubahan polisi memerlukan kuasa pentadbir dan audit.</div></div></div></section>
+</div>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><div class="modal-head"><h3 id="modalTitle">Maklumat</h3><button class="close" onclick="closeModal()">×</button></div><div class="modal-body" id="modalBody"></div><div class="modal-foot" id="modalFoot"><button class="btn" onclick="closeModal()">Tutup</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<div class="meeting" id="meeting">
+  <button class="btn close-meeting" onclick="document.getElementById('meeting').classList.remove('open')">Tutup</button>
+  <small>WAKALAH PUSRAWI</small><h1>Ringkasan Wakalah <span id="meetingYear">2026</span></h1>
+  <div class="meeting-kpis" id="meetingKpis"></div>
+  <div class="meeting-chart" id="meetingChart"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+"use strict";
+const FUND_POLICY=[
+ {name:"Pendidikan",full:"Pendidikan (Anak Wargakerja)",pct:40,color:"#0e4d88"},
+ {name:"Perubatan",full:"Perubatan (Wargakerja)",pct:25,color:"#159a79"},
+ {name:"Permohonan Luar",full:"Permohonan Luar (Bukan Wargakerja)",pct:13,color:"#e5a927"},
+ {name:"Fakir Miskin",full:"Fakir Miskin (Wargakerja)",pct:15,color:"#7b4bc3"},
+ {name:"Bencana",full:"Bencana (Wargakerja & Program CSR)",pct:7,color:"#2da4c4"}
+];
+const ASNAF=["Fakir","Miskin","Muallaf","Al-Gharimin","Fisabilillah"];
+const MONTHS=["Jan","Feb","Mac","Apr","Mei","Jun","Jul","Ogo","Sep","Okt","Nov","Dis"];
+const money=n=>new Intl.NumberFormat("ms-MY",{style:"currency",currency:"MYR",minimumFractionDigits:2}).format(Number(n)||0);
+const dateNow=()=>new Date().toISOString().slice(0,10);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const SUPABASE_URL="https://oyqpwxnmsynnumxqbbge.supabase.co";
+const SUPABASE_KEY="sb_publishable_g_gidSPdkDSI9p9Y2UtXGw_gjaLlO_F";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let db={year:new Date().getFullYear(),incoming:[],applications:[],audit:[]};
+let currentUser=null,lastLoad=0,busy=false;
+const isFinance=()=>currentUser?.role==="FINANCE";
+const isPIC=()=>currentUser?.role==="PIC";
+const activePage=()=>(document.querySelector(".page.active")?.id||"page-dashboard").replace("page-","");
+function save(){}
+function addAudit(){}
+async function loadData(){
+ const y=db.year;
+ const [a,i,l]=await Promise.all([
+  sb.from("applications").select("*").eq("year",y).order("date",{ascending:false}).order("id",{ascending:false}),
+  sb.from("incoming").select("*").eq("year",y).order("date",{ascending:false}),
+  sb.from("audit").select("*").order("time",{ascending:false}).limit(300)
+ ]);
+ const err=a.error||i.error||l.error;
+ if(err){showToast("Gagal memuat data: "+err.message);return false}
+ db.applications=a.data.map(r=>({...r,requested:Number(r.requested),proposed:Number(r.proposed),approved:Number(r.approved),actual:Number(r.actual),varianceReason:r.variance_reason||""}));
+ db.incoming=i.data.map(r=>({...r,amount:Number(r.amount),ref:r.ref||"",note:r.note||""}));
+ db.audit=l.data.map(r=>({time:new Date(r.time).toLocaleString("ms-MY"),user:r.user_name||"",action:r.action||"",record:r.record||"",detail:r.detail||""}));
+ lastLoad=Date.now();updateBadge();return true;
+}
+function updateBadge(){document.getElementById("notifyBadge").textContent=db.applications.filter(x=>x.status==="Menunggu Finance").length}
+async function updateRow(table,id,patch){
+ const {data,error}=await sb.from(table).update(patch).eq("id",id).select("id");
+ if(error){showToast("Gagal: "+error.message);return false}
+ if(!data||!data.length){showToast("Anda tidak mempunyai kebenaran untuk tindakan ini.");return false}
+ return true;
+}
+async function afterChange(msg){await loadData();closeModal();renderPage(activePage());showToast(msg)}
+function verifiedIncoming(){return db.incoming.filter(x=>x.verified).reduce((s,x)=>s+x.amount,0)}
+function actualTotal(){return db.applications.reduce((s,x)=>s+(Number(x.actual)||0),0)}
+function varianceTotal(){return db.applications.reduce((s,x)=>s+Math.max(0,(Number(x.approved)||0)-(Number(x.actual)||0)),0)}
+function recipientsCount(){return db.applications.filter(x=>Number(x.actual)>0).length}
+function fundUsed(name){return db.applications.filter(x=>x.fund===name).reduce((s,x)=>s+(Number(x.actual)||0),0)}
+function asnafUsed(name){return db.applications.filter(x=>x.asnaf===name).reduce((s,x)=>s+(Number(x.actual)||0),0)}
+function statusClass(s){if(/Selesai|Disahkan/.test(s))return"green";if(/Menunggu/.test(s))return"yellow";if(/Ditolak|Tidak/.test(s))return"red";if(/Perbezaan/.test(s))return"orange";return"blue"}
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3000)}
+function openModal(title,body,foot=""){document.getElementById("modalTitle").textContent=title;document.getElementById("modalBody").innerHTML=body;document.getElementById("modalFoot").innerHTML=foot||'<button class="btn" onclick="closeModal()">Tutup</button>';document.getElementById("modal").classList.add("open")}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+
+function renderPage(page){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ const target=document.getElementById("page-"+page)||document.getElementById("page-dashboard");target.classList.add("active");
+ document.querySelectorAll(".nav-item[data-page]").forEach(a=>a.classList.toggle("active",a.dataset.page===page));
+ if(page==="dashboard")renderDashboard();
+ if(page==="applications")renderApplications();
+ if(page==="incoming")renderIncoming();
+ if(page==="outgoing")renderOutgoing();
+ if(page==="verification")renderVerification();
+ if(page==="funds")renderFunds();
+ if(page==="asnaf")renderAsnaf();
+ if(page==="analytics")renderAnalytics();
+ if(page==="reports")renderReportPreview();
+ if(page==="audit")renderAudit();
+ if(page==="settings")renderSettings();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+async function navigate(page){if(Date.now()-lastLoad>15000)await loadData();renderPage(page)}
+function moneyCompact(n){return "RM"+Math.round(n).toLocaleString("ms-MY")}
+function renderDashboard(){
+ const total=verifiedIncoming(),actual=actualTotal(),bal=total-actual,variance=varianceTotal(),pending=db.applications.filter(x=>x.status==="Menunggu Finance").length;
+ document.getElementById("kpis").innerHTML=[
+  ["◉","Dana Wakalah",money(total),"Jumlah diterima tahun "+db.year],
+  ["↗","Jumlah Diagihkan",money(actual),"Actual Finance / agihan"],
+  ["▣","Baki Dana",money(bal),"Dana masuk - actual keluar"],
+  ["♧","Jumlah Penerima",recipientsCount(),"Penerima dengan agihan"],
+  ["✓","Menunggu Finance",pending,"Perlu pengesahan"],
+  ["!","Perbezaan",money(variance),"Approved - Actual"]
+ ].map(x=>`<div class="kpi"><div class="kpi-top"><span class="kpi-icon">${x[0]}</span><span class="pill ${x[1]==="Perbezaan"&&variance>0?"orange":"green"}">${x[1]==="Perbezaan"&&variance>0?"Perlu Semakan":"Aktif"}</span></div><label>${x[1]}</label><strong>${x[2]}</strong><small>${x[3]}</small></div>`).join("");
+ document.getElementById("donutTotal").textContent=moneyCompact(total);
+ document.getElementById("fundLegend").innerHTML=FUND_POLICY.map(f=>{let a=total*f.pct/100,u=fundUsed(f.name),r=a-u;return `<div class="legend-row"><span class="legend-dot" style="background:${f.color}"></span><div><b>${f.full}</b><small>${f.pct}% • Peruntukan ${money(a)} • Digunakan ${money(u)} • Baki ${money(r)}</small></div><strong>${f.pct}%</strong></div>`}).join("");
+ const comparisonFilter=document.getElementById("comparisonFilter")?.value||"Semua";
+ const filteredComps=db.applications.filter(x=>x.approved>0&&(comparisonFilter==="Semua"||x.fund===comparisonFilter));
+ const comps=filteredComps.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,4);
+ const maxComp=Math.max(1,...comps.map(x=>Math.max(Number(x.approved)||0,Number(x.actual)||0)));
+ const shortLabel=x=>{
+   const map={"Pendidikan":"Pendidikan","Perubatan":"Perubatan","Permohonan Luar":"Luar","Fakir Miskin":"Fakir/Miskin","Bencana":"Bencana"};
+   return map[x.fund]||x.fund;
+ };
+ document.getElementById("compareChart").innerHTML=comps.length?comps.map(x=>{
+   const approved=Number(x.approved)||0,actualValue=Number(x.actual)||0;
+   const h1=Math.max(7,approved/maxComp*82),h2=Math.max(7,actualValue/maxComp*82);
+   return `<div class="bar-group">
+     <div class="bar blue" style="height:${h1}%"><span>${moneyCompact(approved)}</span></div>
+     <div class="bar green" style="height:${h2}%"><span>${moneyCompact(actualValue)}</span></div>
+     <div class="bar-label" title="${esc(x.program)}">${esc(shortLabel(x))}</div>
+   </div>`;
+ }).join(""):`<div class="empty">Tiada data untuk kategori ini.</div>`;
+ document.getElementById("varianceKpi").textContent=money(variance);
+ document.getElementById("asnafMini").innerHTML=ASNAF.map(a=>{let u=asnafUsed(a),pct=actual?u/actual*100:0,c=db.applications.filter(x=>x.asnaf===a&&x.actual>0).length;return `<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:10px"><b>${a}</b><span>${money(u)} • ${pct.toFixed(0)}%</span></div><div class="progress"><span style="width:${pct}%"></span></div><small style="color:var(--muted);font-size:9px">${c} penerima</small></div>`}).join("");
+ const actions=[];if(pending)actions.push(["◷",`${pending} transaksi menunggu pengesahan Finance`,"Pengesahan Finance"]);const v=db.applications.filter(x=>x.approved>0&&x.actual>0&&x.approved!==x.actual).length;if(v)actions.push(["!",`${v} transaksi mempunyai variance`,"Semak variance"]);const review=db.applications.filter(x=>x.status==="Dalam Semakan").length;if(review)actions.push(["▤",`${review} permohonan belum disemak`,"Permohonan"]);document.getElementById("actionCount").textContent=actions.length;document.getElementById("actionList").innerHTML=actions.length?actions.map(a=>`<div class="action" onclick="navigate('${a[2].includes("Finance")?"verification":"applications"}')"><div class="aico">${a[0]}</div><div><b>${a[1]}</b><small>${a[2]} →</small></div></div>`).join(""):`<div class="empty" style="padding:20px">Tiada tindakan segera.</div>`;
+ document.getElementById("recentTable").innerHTML=db.applications.slice(0,7).map((x,i)=>`<tr><td>${i+1}</td><td class="id">${x.id}</td><td>${esc(x.program)}</td><td>${esc(x.fund)}</td><td>${x.asnaf}</td><td>${money(x.proposed)}</td><td>${money(x.approved)}</td><td>${money(x.actual)}</td><td>${x.approved-x.actual?`<span class="pill orange">${money(x.approved-x.actual)}</span>`:"—"}</td><td><span class="pill ${statusClass(x.status)}">${x.status}</span></td><td>${x.date}</td></tr>`).join("");
+ renderMonthly("monthlyChart");
+}
+function renderMonthly(id){
+ const vals=MONTHS.map((_,i)=>{const m=i+1;return {p:db.applications.filter(x=>new Date(x.date).getMonth()+1===m).reduce((s,x)=>s+x.approved,0),a:db.applications.filter(x=>new Date(x.date).getMonth()+1===m).reduce((s,x)=>s+x.actual,0)}});
+ const max=Math.max(1,...vals.map(x=>Math.max(x.p,x.a)));document.getElementById(id).innerHTML=vals.map((x,i)=>`<div class="bar-group"><div class="bar blue" style="height:${Math.max(x.p?4:1,x.p/max*75)}%"><span>${x.p?moneyCompact(x.p):""}</span></div><div class="bar green" style="height:${Math.max(x.a?4:1,x.a/max*75)}%"><span>${x.a?moneyCompact(x.a):""}</span></div><div class="bar-label">${MONTHS[i]}</div></div>`).join("");
+}
+function populateSelects(){
+ document.getElementById("fFund").innerHTML=FUND_POLICY.map(f=>`<option value="${f.name}">${f.full}</option>`).join("");
+ document.getElementById("fAsnaf").innerHTML=ASNAF.map(a=>`<option>${a}</option>`).join("");
+ document.getElementById("fundFilter").innerHTML='<option value="">Semua Kategori Dana</option>'+FUND_POLICY.map(f=>`<option>${f.name}</option>`).join("");
+ document.getElementById("asnafFilter").innerHTML='<option value="">Semua Asnaf</option>'+ASNAF.map(a=>`<option>${a}</option>`).join("");
+}
+function renderApplications(){
+ const q=(document.getElementById("appSearch")?.value||"").toLowerCase(),st=document.getElementById("statusFilter")?.value||"",fu=document.getElementById("fundFilter")?.value||"",as=document.getElementById("asnafFilter")?.value||"";
+ const rows=db.applications.filter(x=>(!q||`${x.id} ${x.program} ${x.applicant}`.toLowerCase().includes(q))&&(!st||x.status===st)&&(!fu||x.fund===fu)&&(!as||x.asnaf===as));
+ document.getElementById("applicationsTable").innerHTML=rows.map(x=>`<tr><td class="id">${x.id}</td><td>${esc(x.program)}</td><td>${esc(x.fund)}</td><td>${x.asnaf}</td><td>${money(x.requested)}</td><td>${money(x.proposed)}</td><td>${money(x.approved)}</td><td>${money(x.actual)}</td><td>${x.approved-x.actual?`<span class="pill orange">${money(x.approved-x.actual)}</span>`:"—"}</td><td><span class="pill ${statusClass(x.status)}">${x.status}</span></td><td><button class="btn" onclick="viewApplication('${x.id}')">Lihat</button></td></tr>`).join("")||`<tr><td colspan="11"><div class="empty">Belum terdapat data bagi tempoh ini.</div></td></tr>`;
+}
+function viewApplication(id){
+ const x=db.applications.find(a=>a.id===id);if(!x)return;
+ openModal(x.id,`<div class="stats-grid"><div class="stat-box"><small>Program</small><strong style="font-size:14px">${esc(x.program)}</strong></div><div class="stat-box"><small>Kategori Dana</small><strong style="font-size:14px">${x.fund}</strong></div><div class="stat-box"><small>Asnaf</small><strong style="font-size:14px">${x.asnaf}</strong></div></div><div class="form-grid" style="margin-top:15px"><div class="field"><label>Dipohon</label><input readonly value="${money(x.requested)}"></div><div class="field"><label>Dicadangkan</label><input readonly value="${money(x.proposed)}"></div><div class="field"><label>Diluluskan</label><input readonly value="${money(x.approved)}"></div><div class="field"><label>Actual Finance</label><input readonly value="${money(x.actual)}"></div><div class="field full"><label>Variance / Justifikasi</label><textarea readonly>${esc(x.varianceReason||"Tiada perbezaan")}</textarea></div></div>`,`<button class="btn" onclick="closeModal()">Tutup</button>${x.status==="Menunggu Finance"?`<button class="btn primary" onclick="closeModal();navigate('verification')">Pengesahan Finance</button>`:""}${appActions(x)}`);
+}
+function appActions(x){
+ if(!isPIC())return "";
+ if(x.status==="Dalam Semakan"||x.status==="Draf")return `<button class="btn" onclick="rejectApp('${x.id}')">Tolak</button><button class="btn primary" onclick="approveApp('${x.id}')">Luluskan</button>`;
+ if(x.status==="Diluluskan")return `<button class="btn primary" onclick="sendToFinance('${x.id}')">Hantar ke Finance</button>`;
+ return "";
+}
+function approveApp(id){
+ const x=db.applications.find(a=>a.id===id);if(!x)return;
+ openModal("Luluskan Permohonan",`<div class="form-grid"><div class="field"><label>Permohonan</label><input readonly value="${x.id}"></div><div class="field"><label>Dicadangkan</label><input readonly value="${money(x.proposed)}"></div><div class="field full"><label>Jumlah Diluluskan (RM) *</label><input id="apvAmount" type="number" min="0" step=".01" value="${x.proposed}"></div></div>`,
+ `<button class="btn" onclick="closeModal()">Batal</button><button class="btn primary" onclick="saveApprove('${id}')">Luluskan</button>`);
+}
+async function saveApprove(id){
+ if(busy)return;const amount=Number(document.getElementById("apvAmount").value);
+ if(!(amount>0))return showToast("Jumlah diluluskan mesti lebih daripada RM0.");
+ busy=true;const ok=await updateRow("applications",id,{approved:amount,status:"Diluluskan"});busy=false;
+ if(ok)await afterChange("Permohonan diluluskan.");
+}
+async function sendToFinance(id){
+ if(!confirm("Hantar permohonan ini kepada Finance untuk pengesahan?"))return;
+ if(await updateRow("applications",id,{status:"Menunggu Finance"}))await afterChange("Dihantar kepada Finance.");
+}
+async function rejectApp(id){
+ if(!confirm("Tolak permohonan ini?"))return;
+ if(await updateRow("applications",id,{status:"Ditolak"}))await afterChange("Permohonan ditolak.");
+}
+function renderIncoming(){document.getElementById("incomingTable").innerHTML=db.incoming.map(x=>`<tr><td class="id">${x.id}</td><td>${x.date}</td><td>${esc(x.source)}</td><td>${esc(x.ref)}</td><td>${money(x.amount)}</td><td><span class="pill ${x.verified?"green":"yellow"}">${x.verified?"Disahkan Finance":"Menunggu Finance"}</span>${!x.verified&&isFinance()?` <button class="btn primary" onclick="verifyIncoming('${x.id}')">Sahkan</button>`:""}</td><td>${esc(x.note)}</td></tr>`).join("")}
+function renderOutgoing(){document.getElementById("outgoingTable").innerHTML=db.applications.filter(x=>x.approved>0).map(x=>`<tr><td class="id">WK-OUT-${x.id.slice(-3)}</td><td>${x.id}</td><td>${x.fund}</td><td>${x.asnaf}</td><td>${money(x.proposed)}</td><td>${money(x.approved)}</td><td>${money(x.actual)}</td><td>${x.approved-x.actual?`<span class="pill orange">${money(x.approved-x.actual)}</span>`:"—"}</td><td><span class="pill ${statusClass(x.status)}">${x.status}</span></td></tr>`).join("")}
+function renderVerification(){const rows=db.applications.filter(x=>x.status==="Menunggu Finance"||x.status==="Disahkan Finance");document.getElementById("verificationTable").innerHTML=rows.map(x=>`<tr><td class="id">${x.id}</td><td>${esc(x.program)}</td><td>${money(x.approved)}</td><td>${money(x.actual)}</td><td>${x.approved-x.actual?`<span class="pill orange">${money(x.approved-x.actual)}</span>`:"—"}</td><td><span class="pill ${statusClass(x.status)}">${x.status}</span></td><td>${x.status==="Menunggu Finance"&&isFinance()?`<button class="btn primary" onclick="verify('${x.id}')">Sahkan</button>`:`<button class="btn" onclick="viewApplication('${x.id}')">Lihat</button>`}</td></tr>`).join("")||`<tr><td colspan="7"><div class="empty">Tiada transaksi menunggu pengesahan.</div></td></tr>`}
+function verify(id){
+ const x=db.applications.find(a=>a.id===id);if(!x)return;
+ openModal("Pengesahan Finance",`<div class="form-grid"><div class="field"><label>Permohonan</label><input readonly value="${x.id}"></div><div class="field"><label>Jumlah Diluluskan</label><input readonly value="${money(x.approved)}"></div><div class="field"><label>Jumlah Sebenar / Finance *</label><input id="verifyAmount" type="number" min="0" step=".01" value="${x.actual||x.approved}"></div><div class="field"><label>Status</label><select id="verifyStatus"><option>Disahkan Finance</option><option>Menunggu Finance</option></select></div><div class="field full"><label>Sebab Variance (wajib jika berbeza)</label><textarea id="verifyReason">${esc(x.varianceReason||"")}</textarea></div></div>`,`<button class="btn" onclick="closeModal()">Batal</button><button class="btn primary" onclick="saveVerification('${id}')">Sahkan Amaun</button>`);
+}
+async function saveVerification(id){
+ if(busy)return;
+ const x=db.applications.find(a=>a.id===id),amount=Number(document.getElementById("verifyAmount").value),reason=document.getElementById("verifyReason").value.trim();
+ if(!x||isNaN(amount)||amount<0)return showToast("Jumlah sebenar tidak sah.");
+ if(amount!==x.approved&&!reason)return showToast("Sebab variance diperlukan.");
+ busy=true;const ok=await updateRow("applications",id,{actual:amount,variance_reason:reason,status:"Disahkan Finance"});busy=false;
+ if(ok)await afterChange("Transaksi berjaya disahkan.");
+}
+function renderFunds(){
+ const total=verifiedIncoming();document.getElementById("fundCards").innerHTML=FUND_POLICY.map(f=>{const allocation=total*f.pct/100,used=fundUsed(f.name),bal=allocation-used,pct=allocation?Math.min(100,used/allocation*100):0;return `<div style="padding:14px 4px;border-bottom:1px solid #edf1f5"><div style="display:flex;justify-content:space-between;gap:12px"><div><b>${f.full}</b><small style="display:block;color:var(--muted);margin-top:3px">${f.pct}% daripada jumlah Wakalah</small></div><strong>${money(allocation)}</strong></div><div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-top:10px"><div class="progress"><span style="width:${pct}%"></span></div><small>${pct.toFixed(1)}%</small></div><div style="display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin-top:7px"><span>Digunakan: ${money(used)}</span><span>Baki: ${money(bal)}</span></div></div>`}).join("")}
+function renderAsnaf(){
+ const total=actualTotal();document.getElementById("asnafCards").innerHTML=ASNAF.map(a=>{const amt=asnafUsed(a),count=db.applications.filter(x=>x.asnaf===a&&x.actual>0).length,p=total?amt/total*100:0;return `<div class="stat-box"><small>${a}</small><strong>${money(amt)}</strong><small>${p.toFixed(1)}% daripada agihan • ${count} penerima</small><div class="progress" style="margin-top:10px"><span style="width:${p}%"></span></div></div>`}).join("")}
+function renderAnalytics(){renderFunds();document.getElementById("analyticsFunds").innerHTML=FUND_POLICY.map(f=>{const a=verifiedIncoming()*f.pct/100,u=fundUsed(f.name),p=a?u/a*100:0;return `<div style="margin-bottom:17px"><div style="display:flex;justify-content:space-between;font-size:11px"><b>${f.full}</b><span>${money(u)} / ${money(a)} (${p.toFixed(1)}%)</span></div><div class="progress" style="margin-top:6px"><span style="width:${Math.min(100,p)}%"></span></div></div>`}).join("");renderMonthly("analyticsMonthly")}
+function renderReportPreview(){const total=verifiedIncoming(),actual=actualTotal(),bal=total-actual;document.getElementById("reportPreview").innerHTML=`<div style="max-width:900px;margin:auto"><h2 style="margin-top:0">LAPORAN WAKALAH ZAKAT</h2><p>HOSPITAL PAKAR PUSRAWI SDN BHD • Tahun ${db.year}</p><hr><div class="stats-grid"><div class="stat-box"><small>Total Wakalah</small><strong>${money(total)}</strong></div><div class="stat-box"><small>Total Diagihkan</small><strong>${money(actual)}</strong></div><div class="stat-box"><small>Baki Dana</small><strong>${money(bal)}</strong></div></div><h3>Ringkasan Dana</h3><table class="data-table"><thead><tr><th>Kategori Dana</th><th>Peruntukan</th><th>Digunakan</th><th>Baki</th><th>Utilisasi</th></tr></thead><tbody>${FUND_POLICY.map(f=>{let a=total*f.pct/100,u=fundUsed(f.name);return `<tr><td>${f.full}</td><td>${money(a)}</td><td>${money(u)}</td><td>${money(a-u)}</td><td>${a?(u/a*100).toFixed(1):0}%</td></tr>`}).join("")}</tbody></table><h3>Agihan Mengikut Asnaf</h3><table class="data-table"><tbody>${ASNAF.map(a=>`<tr><td>${a}</td><td>${money(asnafUsed(a))}</td><td>${actual?((asnafUsed(a)/actual)*100).toFixed(1):0}%</td></tr>`).join("")}</tbody></table><p style="color:var(--muted);font-size:10px;margin-top:18px">Dijana: ${new Date().toLocaleString("ms-MY")} • Pengguna: ${currentUser?.name||"PIC Pegawai Agama"}</p></div>`}
+function renderAudit(){document.getElementById("auditTable").innerHTML=db.audit.map(x=>`<tr><td>${esc(x.time)}</td><td>${esc(x.user)}</td><td>${esc(x.action)}</td><td class="id">${esc(x.record)}</td><td>${esc(x.detail)}</td></tr>`).join("")}
+function renderSettings(){document.getElementById("policySettings").innerHTML=FUND_POLICY.map(f=>`<div style="display:grid;grid-template-columns:1fr 100px;gap:10px;padding:11px 0;border-bottom:1px solid #edf1f5"><span>${f.full}</span><b>${f.pct}%</b></div>`).join("")+`<div style="margin-top:14px;text-align:right"><b>Jumlah = 100%</b></div>`}
+async function createApplication(){
+ if(busy)return;const g=id=>document.getElementById(id).value;
+ const requested=Number(g("fRequested")),proposed=Number(g("fProposed")),approved=Number(g("fApproved")||0);
+ if(requested<0||proposed<0||approved<0)return showToast("Amaun tidak boleh negatif.");
+ if(!g("fFund")||!g("fAsnaf"))return showToast("Kategori dana dan asnaf diperlukan.");
+ busy=true;
+ const {error}=await sb.from("applications").insert({year:db.year,date:g("fDate"),applicant:g("fApplicant").trim(),type:g("fType"),program:g("fProgram").trim(),fund:g("fFund"),asnaf:g("fAsnaf"),recipient:g("fRecipient").trim(),requested,proposed,approved,notes:g("fNotes").trim(),status:approved>0?"Diluluskan":"Dalam Semakan"});
+ busy=false;
+ if(error)return showToast("Gagal simpan: "+error.message);
+ document.getElementById("applicationForm").reset();document.getElementById("fDate").value=dateNow();
+ lastLoad=0;showToast("Permohonan berjaya disimpan.");navigate("applications");
+}
+function exportCSV(){
+ const headers=["ID","Tarikh","Pemohon","Program","Kategori Dana","Asnaf","Dipohon","Dicadang","Diluluskan","Actual Finance","Variance","Status"];
+ const rows=db.applications.map(x=>[x.id,x.date,x.applicant,x.program,x.fund,x.asnaf,x.requested,x.proposed,x.approved,x.actual,x.approved-x.actual,x.status]);
+ const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));a.download=`wakalah-${db.year}.csv`;a.click();URL.revokeObjectURL(a.href);showToast("CSV berjaya dieksport.");
+}
+function meetingMode(){const total=verifiedIncoming(),actual=actualTotal();document.getElementById("meetingYear").textContent=db.year;document.getElementById("meetingKpis").innerHTML=[["Dana Wakalah",money(total)],["Jumlah Diagihkan",money(actual)],["Baki Dana",money(total-actual)],["Penerima",recipientsCount()]].map(x=>`<div class="mk"><small>${x[0]}</small><strong>${x[1]}</strong></div>`).join("");const max=Math.max(1,...FUND_POLICY.map(f=>fundUsed(f.name)));document.getElementById("meetingChart").innerHTML=FUND_POLICY.map(f=>`<div class="meeting-bar" style="height:${Math.max(5,fundUsed(f.name)/max*80)}%"><span>${f.name}<br>${moneyCompact(fundUsed(f.name))}</span></div>`).join("");document.getElementById("meeting").classList.add("open")}
+async function login(){
+ if(busy)return;busy=true;
+ const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value;
+ const {data,error}=await sb.auth.signInWithPassword({email,password});
+ if(error){busy=false;return showToast("E-mel atau kata laluan tidak sah.")}
+ const ok=await loadProfile(data.user);busy=false;
+ if(ok){document.getElementById("loginPassword").value="";await boot()}
+}
+async function loadProfile(user){
+ const {data,error}=await sb.from("profiles").select("name,role").eq("id",user.id).maybeSingle();
+ if(error||!data){await sb.auth.signOut();showToast("Akaun ini belum diberi peranan. Hubungi PIC.");return false}
+ currentUser={name:data.name,role:data.role,email:user.email};return true;
+}
+function applyRole(){
+ const show=isPIC()?"":"none";
+ ["quickNew","newAppBtn"].forEach(id=>document.getElementById(id).style.display=show);
+ document.querySelector('.nav-item[data-page="newApplication"]').style.display=show;
+}
+async function boot(){
+ if(!currentUser){document.getElementById("loginScreen").classList.add("show");document.getElementById("app").style.display="none";return}
+ document.getElementById("loginScreen").classList.remove("show");document.getElementById("app").style.display="flex";
+ document.getElementById("userName").textContent=currentUser.name;document.getElementById("userRole").textContent=currentUser.role==="PIC"?"PIC / Admin":"Finance";document.getElementById("avatar").textContent=currentUser.name.split(" ").map(x=>x[0]).slice(0,2).join("");
+ document.getElementById("yearTitle").textContent=db.year;document.getElementById("yearSelect").value=db.year;
+ populateSelects();document.getElementById("fDate").value=dateNow();applyRole();
+ await loadData();renderPage("dashboard");
+}
+document.addEventListener("click",e=>{
+ const page=e.target.closest("[data-page]");if(page){e.preventDefault();navigate(page.dataset.page)}
+ const toggle=e.target.closest("[data-toggle]");if(toggle){e.preventDefault();document.getElementById(toggle.dataset.toggle==="finance"?"financeGroup":"appGroup").classList.toggle("open")}
+});
+document.getElementById("loginForm").addEventListener("submit",e=>{e.preventDefault();login()});
+document.getElementById("logoutBtn").addEventListener("click",async()=>{await sb.auth.signOut();currentUser=null;db.applications=[];db.incoming=[];db.audit=[];boot()});
+document.getElementById("yearSelect").addEventListener("change",async e=>{db.year=Number(e.target.value);document.getElementById("yearTitle").textContent=db.year;await loadData();showToast("Tahun Wakalah ditukar kepada "+db.year);renderPage(activePage())});
+document.getElementById("quickNew").onclick=()=>navigate("newApplication");document.getElementById("newAppBtn").onclick=()=>navigate("newApplication");
+document.getElementById("applicationForm").addEventListener("submit",e=>{e.preventDefault();createApplication()});
+["appSearch","statusFilter","fundFilter","asnafFilter"].forEach(id=>document.getElementById(id)?.addEventListener("input",renderApplications));
+document.getElementById("comparisonFilter")?.addEventListener("change",renderDashboard);
+document.getElementById("incomingBtn").onclick=()=>openModal("Tambah Dana Masuk",`<div class="form-grid"><div class="field"><label>Tarikh</label><input id="inDate" type="date" value="${dateNow()}"></div><div class="field"><label>Sumber</label><input id="inSource" value="PPZ"></div><div class="field"><label>Rujukan PPZ</label><input id="inRef"></div><div class="field"><label>Amaun (RM)</label><input id="inAmount" type="number" min="0" step=".01"></div><div class="field full"><label>Catatan</label><textarea id="inNote"></textarea></div></div>`,`<button class="btn" onclick="closeModal()">Batal</button><button class="btn primary" onclick="saveIncoming()">Simpan</button>`);
+async function saveIncoming(){
+ if(busy)return;const g=id=>document.getElementById(id).value;
+ const amount=Number(g("inAmount"));if(!(amount>0))return showToast("Amaun mesti lebih daripada RM0.");
+ busy=true;const {error}=await sb.from("incoming").insert({year:db.year,date:g("inDate"),source:g("inSource").trim()||"PPZ",ref:g("inRef").trim(),amount,note:g("inNote").trim()});busy=false;
+ if(error)return showToast("Gagal simpan: "+error.message);
+ await afterChange("Dana masuk direkodkan. Menunggu pengesahan Finance.");
+}
+async function verifyIncoming(id){
+ if(!confirm("Sahkan dana masuk ini? Selepas disahkan, ia tidak boleh diubah."))return;
+ if(await updateRow("incoming",id,{verified:true}))await afterChange("Dana masuk disahkan.");
+}
+document.getElementById("exportBtn").onclick=exportCSV;document.getElementById("meetingBtn").onclick=meetingMode;document.getElementById("notifyBtn").onclick=()=>navigate("verification");
+document.querySelectorAll("[data-report]").forEach(b=>b.addEventListener("click",()=>{renderReportPreview();showToast("Laporan "+b.dataset.report+" telah dijana dalam pratonton.")}));
+document.getElementById("globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter"){navigate("applications");document.getElementById("appSearch").value=e.target.value;renderApplications()}});
+(async()=>{
+ const {data}=await sb.auth.getSession();
+ if(data.session&&await loadProfile(data.session.user))await boot();else boot();
+})();
+</script>
+</body>
+</html>
